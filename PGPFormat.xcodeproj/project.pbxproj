@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BFC3866C1FBCE581001D1DBA /* ECKeyParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3866B1FBCE581001D1DBA /* ECKeyParsingTests.swift */; };
+		BFC386721FBCE58C001D1DBA /* ECKeyParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3866B1FBCE581001D1DBA /* ECKeyParsingTests.swift */; };
+		BFC386731FBCE58C001D1DBA /* PGPFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEA70581ECC192D00920AAB /* PGPFormatTests.swift */; };
+		BFC386751FBCE58C001D1DBA /* PGPFormat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FACE33B81EC9E779003EC6C0 /* PGPFormat.framework */; };
+		BFC386771FBCE58C001D1DBA /* pubkey1.txt in Resources */ = {isa = PBXBuildFile; fileRef = FAEA70611ECC197400920AAB /* pubkey1.txt */; };
+		BFC386781FBCE58C001D1DBA /* pubkey2.txt in Resources */ = {isa = PBXBuildFile; fileRef = FA12EAB61ED000D7001603BF /* pubkey2.txt */; };
+		BFC386791FBCE58C001D1DBA /* pubkey3.txt in Resources */ = {isa = PBXBuildFile; fileRef = FA12EAB81ED0283D001603BF /* pubkey3.txt */; };
+		BFC3867A1FBCE58C001D1DBA /* signature.txt in Resources */ = {isa = PBXBuildFile; fileRef = FA12EAC21ED1442D001603BF /* signature.txt */; };
+		BFC3867B1FBCE58C001D1DBA /* signed_raw.txt in Resources */ = {isa = PBXBuildFile; fileRef = FA12EAC41ED14482001603BF /* signed_raw.txt */; };
+		BFC3867C1FBCE58C001D1DBA /* attached_signature.txt in Resources */ = {isa = PBXBuildFile; fileRef = FA2151DD1EF9A4520090F398 /* attached_signature.txt */; };
 		BFF1706B1FBBECCD001FC29C /* PublicKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADE9B2B1EE3B64B0053EC08 /* PublicKeyData.swift */; };
 		BFF1706C1FBBECCD001FC29C /* SignatureSubpacketable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5577ED1EE3C93000D1DA99 /* SignatureSubpacketable.swift */; };
 		BFF1706D1FBBECCD001FC29C /* SignedPublicKeyIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA12EA981ECF9197001603BF /* SignedPublicKeyIdentity.swift */; };
@@ -62,6 +72,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		BFC3866F1FBCE58C001D1DBA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FACE33AF1EC9E779003EC6C0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FACE33B71EC9E779003EC6C0;
+			remoteInfo = PGPFormat;
+		};
 		FAEA705C1ECC192D00920AAB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FACE33AF1EC9E779003EC6C0 /* Project object */;
@@ -72,6 +89,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BFC3866B1FBCE581001D1DBA /* ECKeyParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECKeyParsingTests.swift; sourceTree = "<group>"; };
+		BFC386801FBCE58C001D1DBA /* PGPFormatTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PGPFormatTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFC386821FBCE774001D1DBA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
 		BFF170871FBBECCD001FC29C /* PGPFormat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PGPFormat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA12EA8B1ECD1EA5001603BF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		FA12EA8E1ECE100C001603BF /* SignatureSubpacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureSubpacket.swift; sourceTree = "<group>"; };
@@ -109,6 +129,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		BFC386741FBCE58C001D1DBA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFC386751FBCE58C001D1DBA /* PGPFormat.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BFF1707F1FBBECCD001FC29C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -139,6 +167,7 @@
 		FA12EA8A1ECD1EA5001603BF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BFC386821FBCE774001D1DBA /* AppKit.framework */,
 				FA12EA8B1ECD1EA5001603BF /* Security.framework */,
 			);
 			name = Frameworks;
@@ -199,6 +228,7 @@
 				FACE33B81EC9E779003EC6C0 /* PGPFormat.framework */,
 				FAEA70561ECC192D00920AAB /* PGPFormatTests.xctest */,
 				BFF170871FBBECCD001FC29C /* PGPFormat.framework */,
+				BFC386801FBCE58C001D1DBA /* PGPFormatTests-macOS.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -221,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				FAEA70581ECC192D00920AAB /* PGPFormatTests.swift */,
+				BFC3866B1FBCE581001D1DBA /* ECKeyParsingTests.swift */,
 				FAEA70611ECC197400920AAB /* pubkey1.txt */,
 				FA12EAB61ED000D7001603BF /* pubkey2.txt */,
 				FA12EAB81ED0283D001603BF /* pubkey3.txt */,
@@ -254,6 +285,25 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		BFC3866D1FBCE58C001D1DBA /* PGPFormatTests-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BFC3867D1FBCE58C001D1DBA /* Build configuration list for PBXNativeTarget "PGPFormatTests-macOS" */;
+			buildPhases = (
+				BFC386701FBCE58C001D1DBA /* CommonCrypto */,
+				BFC386711FBCE58C001D1DBA /* Sources */,
+				BFC386741FBCE58C001D1DBA /* Frameworks */,
+				BFC386761FBCE58C001D1DBA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BFC3866E1FBCE58C001D1DBA /* PBXTargetDependency */,
+			);
+			name = "PGPFormatTests-macOS";
+			productName = PGPFormatTests;
+			productReference = BFC386801FBCE58C001D1DBA /* PGPFormatTests-macOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		BFF170681FBBECCD001FC29C /* PGPFormat-macOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BFF170841FBBECCD001FC29C /* Build configuration list for PBXNativeTarget "PGPFormat-macOS" */;
@@ -321,6 +371,9 @@
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "KryptCo, Inc.";
 				TargetAttributes = {
+					BFC3866D1FBCE58C001D1DBA = {
+						DevelopmentTeam = J8Z3TY4LS9;
+					};
 					BFF170681FBBECCD001FC29C = {
 						ProvisioningStyle = Automatic;
 					};
@@ -352,11 +405,25 @@
 				FACE33B71EC9E779003EC6C0 /* PGPFormat */,
 				FAEA70551ECC192D00920AAB /* PGPFormatTests */,
 				BFF170681FBBECCD001FC29C /* PGPFormat-macOS */,
+				BFC3866D1FBCE58C001D1DBA /* PGPFormatTests-macOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		BFC386761FBCE58C001D1DBA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFC386771FBCE58C001D1DBA /* pubkey1.txt in Resources */,
+				BFC386781FBCE58C001D1DBA /* pubkey2.txt in Resources */,
+				BFC386791FBCE58C001D1DBA /* pubkey3.txt in Resources */,
+				BFC3867A1FBCE58C001D1DBA /* signature.txt in Resources */,
+				BFC3867B1FBCE58C001D1DBA /* signed_raw.txt in Resources */,
+				BFC3867C1FBCE58C001D1DBA /* attached_signature.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BFF170831FBBECCD001FC29C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -387,6 +454,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		BFC386701FBCE58C001D1DBA /* CommonCrypto */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = CommonCrypto;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "modulesDirectory=$DERIVED_FILES_DIR/modules\nmodulesMap=$modulesDirectory/module.modulemap\nmodulesMapTemp=$modulesDirectory/module.modulemap.tmp\n\nmkdir -p \"$modulesDirectory\"\n\ncat > \"$modulesMapTemp\" << MAP\nmodule CommonCrypto [system] {\n    header \"$SDKROOT/usr/include/CommonCrypto/CommonCrypto.h\"\n    export *\n}\nMAP\n\ndiff \"$modulesMapTemp\" \"$modulesMap\" >/dev/null 2>/dev/null\nif [[ $? != 0 ]] ; then\nmv \"$modulesMapTemp\" \"$modulesMap\"\nelse\nrm \"$modulesMapTemp\"\nfi";
+		};
 		BFF170691FBBECCD001FC29C /* CommonCrypto */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -432,6 +513,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		BFC386711FBCE58C001D1DBA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFC386721FBCE58C001D1DBA /* ECKeyParsingTests.swift in Sources */,
+				BFC386731FBCE58C001D1DBA /* PGPFormatTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BFF1706A1FBBECCD001FC29C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -490,6 +580,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFC3866C1FBCE581001D1DBA /* ECKeyParsingTests.swift in Sources */,
 				FAEA70591ECC192D00920AAB /* PGPFormatTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -497,6 +588,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		BFC3866E1FBCE58C001D1DBA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FACE33B71EC9E779003EC6C0 /* PGPFormat */;
+			targetProxy = BFC3866F1FBCE58C001D1DBA /* PBXContainerItemProxy */;
+		};
 		FAEA705D1ECC192D00920AAB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FACE33B71EC9E779003EC6C0 /* PGPFormat */;
@@ -505,6 +601,32 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		BFC3867E1FBCE58C001D1DBA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = J8Z3TY4LS9;
+				INFOPLIST_FILE = PGPFormatTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = co.krypt.PGPFormatTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		BFC3867F1FBCE58C001D1DBA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = J8Z3TY4LS9;
+				INFOPLIST_FILE = PGPFormatTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = co.krypt.PGPFormatTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 		BFF170851FBBECCD001FC29C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -727,6 +849,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		BFC3867D1FBCE58C001D1DBA /* Build configuration list for PBXNativeTarget "PGPFormatTests-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BFC3867E1FBCE58C001D1DBA /* Debug */,
+				BFC3867F1FBCE58C001D1DBA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		BFF170841FBBECCD001FC29C /* Build configuration list for PBXNativeTarget "PGPFormat-macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

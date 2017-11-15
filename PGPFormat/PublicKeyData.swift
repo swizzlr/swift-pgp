@@ -59,11 +59,12 @@ public struct RSAPublicKey:PublicKeyData{
 }
 
 /**
-    The Ed25519 public key data structure
+    The Ed25519 and ECDSA public key data structures
     https://tools.ietf.org/html/draft-koch-eddsa-for-openpgp-00
+    https://tools.ietf.org/html/rfc6637#section-9
  */
 
-public struct Ed25519PublicKey:PublicKeyData {
+public struct ECPublicKey: PublicKeyData {
     
     var rawData:Data
     
@@ -74,40 +75,41 @@ public struct Ed25519PublicKey:PublicKeyData {
     }
     
     /**
-        Ed25519 constants:
-            - prefix byte
+        EC constants:
+            - prefix byte (Ed25519 only)
             - curve OID
      */
     public struct Constants {
-        public static let prefixByte:UInt8 = 0x40
-        public static let curveOID:[UInt8] = [0x2B, 0x06, 0x01, 0x04, 0x01, 0xDA, 0x47, 0x0F, 0x01]
+        public static let prefixByte: UInt8 = 0x40
+        public static let ed25519OID: [UInt8] = [0x2B, 0x06, 0x01, 0x04, 0x01, 0xDA, 0x47, 0x0F, 0x01]
+        public static let p256OID: [UInt8] = [0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x03, 0x01, 0x07]
     }
     
     public init(rawData:Data) {
         self.rawData = rawData
     }
     
-    public init(mpintData:Data) throws {
+    public init(mpintData: Data) throws {
         
         let bytes = mpintData.bytes
         
-        guard bytes.count >= 1 + Constants.curveOID.count else {
+        guard bytes.count >= 1 + Constants.ed25519OID.count else {
             throw DataError.tooShort(bytes.count)
         }
 
         var start = 0
-        guard Int(bytes[start]) == Constants.curveOID.count else {
+        guard Int(bytes[start]) == Constants.ed25519OID.count else {
             throw ParsingError.badECCCurveOIDLength(bytes[start])
         }
         
         start += 1
         
-        let curveOID = [UInt8](bytes[start ..< start + Constants.curveOID.count])
-        guard curveOID == Constants.curveOID else {
+        let curveOID = [UInt8](bytes[start ..< start + Constants.ed25519OID.count])
+        guard curveOID == Constants.ed25519OID else {
             throw ParsingError.unsupportedECCCurveOID(Data(bytes: curveOID))
         }
         
-        start += Constants.curveOID.count
+        start += Constants.ed25519OID.count
         
         guard bytes.count > start else {
             throw DataError.tooShort(bytes.count)
@@ -129,7 +131,7 @@ public struct Ed25519PublicKey:PublicKeyData {
     
     public func toData() -> Data {
         var data = Data()
-        data.append(contentsOf: [UInt8(Constants.curveOID.count)] + Constants.curveOID)
+        data.append(contentsOf: [UInt8(Constants.ed25519OID.count)] + Constants.ed25519OID)
         
         let mpint = MPInt(integerData: Data(bytes: [Constants.prefixByte] + rawData.bytes))
         

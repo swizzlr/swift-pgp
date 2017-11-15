@@ -18,6 +18,7 @@ public enum PublicKeyAlgorithm:UInt8 {
     case rsaEncryptOrSign = 1
     case rsaEncryptOnly = 2
     case rsaSignOnly = 3
+    case ecdsa = 19
     case ed25519 = 22
     
     init(type:UInt8) throws {
@@ -106,9 +107,8 @@ public struct PublicKey:Packetable {
         switch algorithm {
         case .rsaSignOnly, .rsaEncryptOnly, .rsaEncryptOrSign:
             self.publicKeyData = try RSAPublicKey(mpintData: keyData)
-            
-        case .ed25519:
-            self.publicKeyData = try Ed25519PublicKey(mpintData: keyData)
+        case .ed25519, .ecdsa:
+            self.publicKeyData = try ECPublicKey(mpintData: keyData)
         }
     }
     

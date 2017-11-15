@@ -190,7 +190,7 @@ public struct Signature:Packetable {
             
             signature = sigData
             
-        case .rsaEncryptOnly:
+        case .rsaEncryptOnly, .ecdsa:
             throw PublicKeyAlgorithm.UnsupportedType(type: publicKeyAlgorithm.rawValue)
             
         }
@@ -322,7 +322,7 @@ public struct Signature:Packetable {
             data.append(contentsOf: secondPointMPInt.lengthBytes)
             data.append(secondPointMPInt.data)
             
-        case .rsaEncryptOnly:
+        case .rsaEncryptOnly, .ecdsa:
             throw PublicKeyAlgorithm.UnsupportedType(type: publicKeyAlgorithm.rawValue)
         }
         
