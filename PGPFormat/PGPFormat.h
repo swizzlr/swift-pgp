@@ -6,7 +6,7 @@
 //  Copyright © 2017 KryptCo, Inc. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import Foundation;
 
 //! Project version number for PGPFormat.
 FOUNDATION_EXPORT double PGPFormatVersionNumber;
