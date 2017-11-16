@@ -15,6 +15,7 @@ class PGPFormatTests: XCTestCase {
     var pubkey1:String!
     var pubkey2:String!
     var pubkeyEd25519:String!
+    var pubkeyECDSA: String!
 
     var binarySignature:String!
     var binaryDocument:String!
@@ -29,6 +30,7 @@ class PGPFormatTests: XCTestCase {
         pubkey1 = try! String(contentsOfFile: bundle.path(forResource: "pubkey1", ofType: "txt")!)
         pubkey2 = try! String(contentsOfFile: bundle.path(forResource: "pubkey2", ofType: "txt")!)
         pubkeyEd25519 = try! String(contentsOfFile: bundle.path(forResource: "pubkey3", ofType: "txt")!)
+        pubkeyECDSA = try! String(contentsOfFile: bundle.path(forResource: "ecdsa-identity", ofType: "asc")!)
 
         binarySignature = try! String(contentsOfFile: bundle.path(forResource: "signature", ofType: "txt")!)
         binaryDocument = try! String(contentsOfFile: bundle.path(forResource: "signed_raw", ofType: "txt")!)
@@ -137,6 +139,28 @@ class PGPFormatTests: XCTestCase {
     func testPublicKeyEd25519SerializeDeserializePacket() {
         do  {
             let pubMsg = try AsciiArmorMessage(string: pubkeyEd25519)
+            let packets = try [Packet](data: pubMsg.packetData)
+            
+            let packetOriginal = packets[0]
+            let pubKeyOriginal = try PublicKey(packet: packetOriginal)
+            
+            let packetSerialized = try pubKeyOriginal.toPacket()
+            let _ = try PublicKey(packet: packetSerialized)
+            
+            guard packetSerialized.body == packetOriginal.body else {
+                print("original: \(packetOriginal.body.bytes)")
+                print("serialized: \(packetSerialized.body.bytes)")
+                XCTFail("packets differ after serialization deserialization")
+                return
+                
+            }
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+    func testPublicKeyECDSASerializeDeserializePacket() {
+        do  {
+            let pubMsg = try AsciiArmorMessage(string: pubkeyECDSA)
             let packets = try [Packet](data: pubMsg.packetData)
             
             let packetOriginal = packets[0]

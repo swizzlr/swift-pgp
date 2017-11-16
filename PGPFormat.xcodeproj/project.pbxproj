@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BFC3866C1FBCE581001D1DBA /* ECKeyParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3866B1FBCE581001D1DBA /* ECKeyParsingTests.swift */; };
-		BFC386721FBCE58C001D1DBA /* ECKeyParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3866B1FBCE581001D1DBA /* ECKeyParsingTests.swift */; };
 		BFC386731FBCE58C001D1DBA /* PGPFormatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEA70581ECC192D00920AAB /* PGPFormatTests.swift */; };
 		BFC386751FBCE58C001D1DBA /* PGPFormat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FACE33B81EC9E779003EC6C0 /* PGPFormat.framework */; };
 		BFC386771FBCE58C001D1DBA /* pubkey1.txt in Resources */ = {isa = PBXBuildFile; fileRef = FAEA70611ECC197400920AAB /* pubkey1.txt */; };
@@ -17,6 +15,8 @@
 		BFC3867A1FBCE58C001D1DBA /* signature.txt in Resources */ = {isa = PBXBuildFile; fileRef = FA12EAC21ED1442D001603BF /* signature.txt */; };
 		BFC3867B1FBCE58C001D1DBA /* signed_raw.txt in Resources */ = {isa = PBXBuildFile; fileRef = FA12EAC41ED14482001603BF /* signed_raw.txt */; };
 		BFC3867C1FBCE58C001D1DBA /* attached_signature.txt in Resources */ = {isa = PBXBuildFile; fileRef = FA2151DD1EF9A4520090F398 /* attached_signature.txt */; };
+		BFC386861FBCEE8A001D1DBA /* ecdsa-identity.asc in Resources */ = {isa = PBXBuildFile; fileRef = BFC386851FBCEE8A001D1DBA /* ecdsa-identity.asc */; };
+		BFC386871FBCEE8A001D1DBA /* ecdsa-identity.asc in Resources */ = {isa = PBXBuildFile; fileRef = BFC386851FBCEE8A001D1DBA /* ecdsa-identity.asc */; };
 		BFF1706B1FBBECCD001FC29C /* PublicKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADE9B2B1EE3B64B0053EC08 /* PublicKeyData.swift */; };
 		BFF1706C1FBBECCD001FC29C /* SignatureSubpacketable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5577ED1EE3C93000D1DA99 /* SignatureSubpacketable.swift */; };
 		BFF1706D1FBBECCD001FC29C /* SignedPublicKeyIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA12EA981ECF9197001603BF /* SignedPublicKeyIdentity.swift */; };
@@ -89,9 +89,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		BFC3866B1FBCE581001D1DBA /* ECKeyParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECKeyParsingTests.swift; sourceTree = "<group>"; };
 		BFC386801FBCE58C001D1DBA /* PGPFormatTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PGPFormatTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC386821FBCE774001D1DBA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
+		BFC386851FBCEE8A001D1DBA /* ecdsa-identity.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ecdsa-identity.asc"; sourceTree = "<group>"; };
 		BFF170871FBBECCD001FC29C /* PGPFormat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PGPFormat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA12EA8B1ECD1EA5001603BF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		FA12EA8E1ECE100C001603BF /* SignatureSubpacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureSubpacket.swift; sourceTree = "<group>"; };
@@ -251,11 +251,11 @@
 			isa = PBXGroup;
 			children = (
 				FAEA70581ECC192D00920AAB /* PGPFormatTests.swift */,
-				BFC3866B1FBCE581001D1DBA /* ECKeyParsingTests.swift */,
 				FAEA70611ECC197400920AAB /* pubkey1.txt */,
 				FA12EAB61ED000D7001603BF /* pubkey2.txt */,
 				FA12EAB81ED0283D001603BF /* pubkey3.txt */,
 				FA12EAC21ED1442D001603BF /* signature.txt */,
+				BFC386851FBCEE8A001D1DBA /* ecdsa-identity.asc */,
 				FA2151DD1EF9A4520090F398 /* attached_signature.txt */,
 				FA12EAC41ED14482001603BF /* signed_raw.txt */,
 				FAEA705A1ECC192D00920AAB /* Info.plist */,
@@ -415,6 +415,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFC386871FBCEE8A001D1DBA /* ecdsa-identity.asc in Resources */,
 				BFC386771FBCE58C001D1DBA /* pubkey1.txt in Resources */,
 				BFC386781FBCE58C001D1DBA /* pubkey2.txt in Resources */,
 				BFC386791FBCE58C001D1DBA /* pubkey3.txt in Resources */,
@@ -442,6 +443,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFC386861FBCEE8A001D1DBA /* ecdsa-identity.asc in Resources */,
 				FAEA70621ECC197400920AAB /* pubkey1.txt in Resources */,
 				FA12EAB71ED000D7001603BF /* pubkey2.txt in Resources */,
 				FA12EAB91ED0283D001603BF /* pubkey3.txt in Resources */,
@@ -517,7 +519,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFC386721FBCE58C001D1DBA /* ECKeyParsingTests.swift in Sources */,
 				BFC386731FBCE58C001D1DBA /* PGPFormatTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -580,7 +581,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFC3866C1FBCE581001D1DBA /* ECKeyParsingTests.swift in Sources */,
 				FAEA70591ECC192D00920AAB /* PGPFormatTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

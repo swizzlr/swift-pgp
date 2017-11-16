@@ -66,10 +66,11 @@ public struct RSAPublicKey:PublicKeyData{
 
 public struct ECPublicKey: PublicKeyData {
     
-    var rawData:Data
+    var rawData: Data
+    var curve: Curve
     
     enum ParsingError:Error {
-        case missingECCPrefixByte
+        case missingOrUnsupportedECCPrefixByte
         case badECCCurveOIDLength(UInt8)
         case unsupportedECCCurveOID(Data)
     }
@@ -80,60 +81,95 @@ public struct ECPublicKey: PublicKeyData {
             - curve OID
      */
     public struct Constants {
-        public static let prefixByte: UInt8 = 0x40
+        public static let ecUncompressedPrefixByte: UInt8 = 0x04
+        public static let edEncodedPrefixByte: UInt8 = 0x40
         public static let ed25519OID: [UInt8] = [0x2B, 0x06, 0x01, 0x04, 0x01, 0xDA, 0x47, 0x0F, 0x01]
         public static let p256OID: [UInt8] = [0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x03, 0x01, 0x07]
     }
     
-    public init(rawData:Data) {
+    public enum Curve {
+        case p256
+        case ed25519
+        var oid: [UInt8] {
+            switch self {
+            case .p256:
+                return Constants.p256OID
+            case .ed25519:
+                return Constants.ed25519OID
+            }
+        }
+        var encodingPrefixByte: UInt8 {
+            switch self {
+            case .p256:
+                return Constants.ecUncompressedPrefixByte
+            case .ed25519:
+                return Constants.edEncodedPrefixByte
+            }
+        }
+    }
+    
+    // The raw bytes of the curve-point
+    public init(rawData: Data, curveType: Curve) {
         self.rawData = rawData
+        self.curve = curveType
     }
     
     public init(mpintData: Data) throws {
         
         let bytes = mpintData.bytes
         
-        guard bytes.count >= 1 + Constants.ed25519OID.count else {
+        guard bytes.count >= 1 + Constants.p256OID.count else { // shortest oid
             throw DataError.tooShort(bytes.count)
         }
 
         var start = 0
-        guard Int(bytes[start]) == Constants.ed25519OID.count else {
+        // FIXME:
+        // The first byte indicates OID length.
+        // This algorithm works because we only support two curves with OIDs of different lengths.
+        // The moment we start supporting more curves, we have to use it as a guide to lookahead, pull out the oid and match against the full oid
+        let expectedCurveType: Curve
+        switch Int(bytes[start]) {
+        case Constants.ed25519OID.count:
+            expectedCurveType = .ed25519
+        case Constants.p256OID.count:
+            expectedCurveType = .p256
+        default:
             throw ParsingError.badECCCurveOIDLength(bytes[start])
         }
         
         start += 1
         
-        let curveOID = [UInt8](bytes[start ..< start + Constants.ed25519OID.count])
-        guard curveOID == Constants.ed25519OID else {
+        let curveOID = [UInt8](bytes[start ..< start + expectedCurveType.oid.count])
+        guard curveOID == expectedCurveType.oid else {
             throw ParsingError.unsupportedECCCurveOID(Data(bytes: curveOID))
         }
         
-        start += Constants.ed25519OID.count
+        start += expectedCurveType.oid.count
         
         guard bytes.count > start else {
             throw DataError.tooShort(bytes.count)
         }
         
         let mpintBytes = try MPInt(mpintData: Data(bytes: bytes[start ..< bytes.count])).data.bytes
-        
-        guard mpintBytes.first == Constants.prefixByte else {
-            throw ParsingError.missingECCPrefixByte
+    
+        guard mpintBytes.first == expectedCurveType.encodingPrefixByte else {
+            throw ParsingError.missingOrUnsupportedECCPrefixByte
         }
         
         guard mpintBytes.count > 1 else {
             throw DataError.tooShort(mpintBytes.count)
         }
-        
+        self.curve = expectedCurveType
         self.rawData = Data(bytes: mpintBytes[1 ..< mpintBytes.count])
     }
     
     
     public func toData() -> Data {
         var data = Data()
-        data.append(contentsOf: [UInt8(Constants.ed25519OID.count)] + Constants.ed25519OID)
+        let oidLength: UInt8 = UInt8(self.curve.oid.count)
+        data.append(contentsOf: [oidLength] + self.curve.oid)
         
-        let mpint = MPInt(integerData: Data(bytes: [Constants.prefixByte] + rawData.bytes))
+        let mpint = MPInt(integerData: Data(bytes: [self.curve.encodingPrefixByte] + rawData.bytes))
         
         data.append(contentsOf: mpint.lengthBytes)
         data.append(mpint.data)
