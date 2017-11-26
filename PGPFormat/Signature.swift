@@ -89,7 +89,7 @@ public struct Signature:Packetable {
     public var hashAlgorithm:HashAlgorithm
     public var hashedSubpacketables:[SignatureSubpacketable]
     public var unhashedSubpacketables:[SignatureSubpacketable]
-    public var signature:Data
+    public var signature:[MPInt]
     public var leftTwoHashBytes:[UInt8]
 
     /**
@@ -163,32 +163,25 @@ public struct Signature:Packetable {
         switch publicKeyAlgorithm {
         case .rsaEncryptOrSign, .rsaSignOnly:
             let signatureMPInt = try MPInt(mpintData: Data(bytes: bytes[ptr ..< bytes.count]))
-            signature = signatureMPInt.data
+            signature = [signatureMPInt]
             
         case .ed25519:
             
             // first point
-            let firstPointMPInt = try MPInt(mpintData: Data(bytes: bytes[ptr ..< bytes.count]))
-
-            ptr += firstPointMPInt.byteLength
-            
-            // second point
-            guard bytes.count > ptr else {
-                throw DataError.tooShort(bytes.count)
-            }
-            
-            let secondPointMPint = try MPInt(mpintData: Data(bytes: bytes[ptr ..< bytes.count]))
+            var firstPointMPInt = try MPInt(mpintData: Data(bytes: bytes[ptr ..< bytes.count]))
+             ptr += firstPointMPInt.byteLength
+            var secondPointMPint = try MPInt(mpintData: Data(bytes: bytes[ptr ..< bytes.count]))
             
             // pad points with 0s if needed
-            let firstPoint = firstPointMPInt.data.padPrependedZeros(upto: 32)
-            let secondPoint = secondPointMPint.data.padPrependedZeros(upto: 32)
+            firstPointMPInt.data = firstPointMPInt.data.padPrependedZeros(upto: 32)
+            secondPointMPint.data = secondPointMPint.data.padPrependedZeros(upto: 32)
 
             // concat points for raw signature data
-            var sigData = Data()
-            sigData.append(firstPoint)
-            sigData.append(secondPoint)
+//            var sigData = Data()
+//            sigData.append(firstPoint)
+//            sigData.append(secondPoint)
             
-            signature = sigData
+            signature = [firstPointMPInt, secondPointMPint]
             
         case .rsaEncryptOnly, .ecdsa:
             throw PublicKeyAlgorithm.UnsupportedType(type: publicKeyAlgorithm.rawValue)
@@ -205,7 +198,7 @@ public struct Signature:Packetable {
         self.hashedSubpacketables = hashedSubpacketables
         self.unhashedSubpacketables = []
         self.leftTwoHashBytes = []
-        self.signature = Data()
+        self.signature = []
     }
     
     /**
@@ -270,7 +263,7 @@ public struct Signature:Packetable {
     /**
         Set the signature data and left two hash bytes
      */
-    mutating public func set(hash:Data, signedHash:Data) throws {
+    mutating public func set(hash:Data, signedHash:[MPInt]) throws {
         guard hash.count >= 2 else {
             throw Signature.SerializingError.invalidHashLength(hash.count)
         }
@@ -303,26 +296,27 @@ public struct Signature:Packetable {
         // signature MPI
         switch publicKeyAlgorithm {
         case .rsaEncryptOrSign, .rsaSignOnly:
-            let signatureMPInt = MPInt(integerData: signature)
+            guard let signatureMPInt = signature.first else {
+                throw SerializingError.invalidSignatureLength(signature.map { $0.data.count }.reduce(0, +))
+            }
             
             data.append(contentsOf: signatureMPInt.lengthBytes)
             data.append(signatureMPInt.data)
             
-        case .ed25519:
-            guard signature.count == 64 else {
+        case .ed25519, .ecdsa:
+            guard signature.count == 2 else {
                 throw SerializingError.invalidSignatureLength(signature.count)
             }
             
-            let firstPointMPInt = MPInt(integerData: Data(bytes: signature.bytes[0...31]))
-            let secondPointMPInt = MPInt(integerData: Data(bytes: signature.bytes[32...63]))
+            let firstPointMPInt = signature[0]
+            let secondPointMPInt = signature[1]
             
             data.append(contentsOf: firstPointMPInt.lengthBytes)
             data.append(firstPointMPInt.data)
             
             data.append(contentsOf: secondPointMPInt.lengthBytes)
             data.append(secondPointMPInt.data)
-            
-        case .rsaEncryptOnly, .ecdsa:
+        case .rsaEncryptOnly:
             throw PublicKeyAlgorithm.UnsupportedType(type: publicKeyAlgorithm.rawValue)
         }
         

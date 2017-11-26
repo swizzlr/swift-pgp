@@ -129,7 +129,7 @@ public struct PublicKey:Packetable {
         data.append(contentsOf: [algorithm.rawValue])
         
         // add public key data
-        data.append(publicKeyData.toData())
+        data.append(contentsOf: publicKeyData.toData())
         
         return data
     }

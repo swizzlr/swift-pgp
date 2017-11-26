@@ -13,7 +13,7 @@ import Foundation
  */
 public protocol PublicKeyData {
     init(mpintData:Data) throws
-    func toData() -> Data
+    func toData() -> [UInt8]
 }
 
 /**
@@ -43,7 +43,7 @@ public struct RSAPublicKey:PublicKeyData{
         self.exponent = try MPInt(mpintData: Data(bytes: bytes[start ..< bytes.count]))
     }
     
-    public func toData() -> Data {
+    public func toData() -> [UInt8] {
         var data = Data()
         
         // modulus:  MPI two-octet scalar length then modulus
@@ -54,7 +54,7 @@ public struct RSAPublicKey:PublicKeyData{
         data.append(contentsOf: exponent.lengthBytes)
         data.append(exponent.data)
         
-        return data
+        return [UInt8](data)
     }
 }
 
@@ -66,6 +66,7 @@ public struct RSAPublicKey:PublicKeyData{
 
 public struct ECPublicKey: PublicKeyData {
     
+    /// The raw curve data, comprising an encoding prefix (compressed/uncompressed) + the encoded curve points
     var rawData: Data
     var curve: Curve
     
@@ -108,12 +109,17 @@ public struct ECPublicKey: PublicKeyData {
         }
     }
     
-    // The raw bytes of the curve-point
-    public init(rawData: Data, curveType: Curve) {
+    // The raw bytes of the curve-point, including the prefix byte
+    public init(rawData: Data, curveType: Curve) throws {
+        guard rawData.first == curveType.encodingPrefixByte else {
+            throw ParsingError.missingOrUnsupportedECCPrefixByte
+        }
         self.rawData = rawData
         self.curve = curveType
     }
     
+    /// initialize with the bytes describing the public key.
+    /// In this case, mpintData contains both the initial OID header (length declaration + OID) and the subsequent MPInt of an encoded curve point
     public init(mpintData: Data) throws {
         
         let bytes = mpintData.bytes
@@ -160,19 +166,19 @@ public struct ECPublicKey: PublicKeyData {
             throw DataError.tooShort(mpintBytes.count)
         }
         self.curve = expectedCurveType
-        self.rawData = Data(bytes: mpintBytes[1 ..< mpintBytes.count])
+        self.rawData = Data(bytes: mpintBytes)
     }
     
     
-    public func toData() -> Data {
-        var data = Data()
+    public func toData() -> [UInt8] {
+        var data: [UInt8] = []
         let oidLength: UInt8 = UInt8(self.curve.oid.count)
         data.append(contentsOf: [oidLength] + self.curve.oid)
         
-        let mpint = MPInt(integerData: Data(bytes: [self.curve.encodingPrefixByte] + rawData.bytes))
+        let mpint = MPInt(integerData: Data(bytes: rawData.bytes))
         
         data.append(contentsOf: mpint.lengthBytes)
-        data.append(mpint.data)
+        data.append(contentsOf: [UInt8](mpint.data))
         
         return data
     }
